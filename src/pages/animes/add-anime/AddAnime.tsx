@@ -24,11 +24,19 @@ export const AddAnime = () => {
   });
 
   const onSubmit: SubmitHandler<IAnime> = async (data) => {
+    data.id = setDynamicId(data.title);
     console.log(data);
 
     try {
     } catch (error) {}
   };
+
+  function setDynamicId(title: string) {
+    const id =
+      title.toString().toLowerCase().replaceAll(" ", "") +
+      Math.floor(Math.random() * 10000);
+    return id;
+  }
   return (
     <section className="w-full flex items-center justify-center">
       <form
