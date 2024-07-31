@@ -4,15 +4,17 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { IAnime } from "../../../interfaces/anime.interface";
 import { urlRegex } from "../../../helpers";
+import { postAnimesLocalStorage } from "../../../services/animeService";
 
 // const formSchema=z.object({
 
 // })
 export const AddAnime = () => {
+  1;
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       id: "",
@@ -25,10 +27,13 @@ export const AddAnime = () => {
 
   const onSubmit: SubmitHandler<IAnime> = async (data) => {
     data.id = setDynamicId(data.title);
-    console.log(data);
 
     try {
-    } catch (error) {}
+      const response = await postAnimesLocalStorage(data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   function setDynamicId(title: string) {
@@ -89,7 +94,9 @@ export const AddAnime = () => {
           />
         </div>
         <div className="flex justify-between items-center">
-          <button className="btn-primary">Agregar</button>
+          <button className="btn-primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Guardando" : "Agregar"}
+          </button>
           {/* <button className="btn-secondary">Editar</button> */}
           <Link className="btn-red" to="/">
             Cancelar

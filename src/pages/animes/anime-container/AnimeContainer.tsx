@@ -1,12 +1,14 @@
 import useFetch from "../../../hooks/useFetch";
-import { getAnimesLocalDB } from "../../../services/animeService";
+import {
+  getAnimesLocalDB,
+  getAnimesLocalStorage,
+} from "../../../services/animeService";
 import { AnimeCard } from "./components/AnimeCard";
 
 export const AnimeContainer = () => {
-  const { data, isLoading, error } = useFetch({
-    getData: getAnimesLocalDB,
+  const { data } = useFetch({
+    getData: getAnimesLocalStorage,
   });
-  console.log(data, isLoading, error);
 
   const handleUpdate = (id: string) => {
     console.log(id);
@@ -14,6 +16,7 @@ export const AnimeContainer = () => {
   const handleDelete = (id: string) => {
     console.log(id);
   };
+
   return (
     <section className="w-full my-4">
       <div className="flex flex-col md:flex-row md:justify-around px-2 md:flex-wrap items center">
