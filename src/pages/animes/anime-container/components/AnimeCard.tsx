@@ -1,6 +1,7 @@
-import { titleCase } from "../../../../helpers/title-case";
+
 import { IAnime } from "../../../../interfaces/anime.interface";
 import noImage from "../../../../assets/no-image.jpg";
+import { titleCase } from "../../../../helpers";
 type AnimeCardProp = {
   anime: IAnime;
   onUpdate: (id: string) => void;

@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
 import { IFunctionGetData } from "../interfaces/functionGetData.interface";
 
-type UseFetchProps = {
-  getData: IFunctionGetData;
-};
-
 type initialState = {
   data: any[];
   isLoading: boolean;
   error?: unknown;
 };
 
-const useFetch = ({ getData }: UseFetchProps) => {
+const useFetch = ({ getData }: { getData: IFunctionGetData }) => {
   const [fetchData, setFetchData] = useState<initialState>({
     data: [],
     isLoading: true,
