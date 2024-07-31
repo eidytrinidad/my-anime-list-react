@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { IAnime } from "../../../interfaces/anime.interface";
 import { urlRegex } from "../../../helpers";
-import { postAnimesLocalStorage } from "../../../services/animeService";
+import { postAnimesLocalStorage } from "../../../services";
 
 // const formSchema=z.object({
 
