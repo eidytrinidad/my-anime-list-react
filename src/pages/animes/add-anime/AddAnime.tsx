@@ -1,35 +1,51 @@
 // import { z } from "zod";
 
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { IAnime } from "../../../interfaces/anime.interface";
 import { urlRegex } from "../../../helpers";
-import { postAnimesLocalStorage } from "../../../services";
+import {
+  editAnimesLocalStorage,
+  getAnimeLocalStorage,
+  postAnimesLocalStorage,
+} from "../../../services";
+import { DevTool } from "@hookform/devtools";
 
 // const formSchema=z.object({
 
 // })
 export const AddAnime = () => {
-  1;
+  let { animeId } = useParams();
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
-  } = useForm({
-    defaultValues: {
-      id: "",
-      title: "",
-      imgUrl: "",
-      genres: "",
-      state: true,
+  } = useForm<IAnime>({
+    defaultValues: async () => {
+      const response = await getAnimeLocalStorage(animeId);
+      const anime = response;
+      return {
+        id: "",
+        title: anime?.title,
+        imgUrl: anime?.imgUrl,
+        genres: anime?.genres,
+        state: anime?.state,
+      };
     },
   });
 
   const onSubmit: SubmitHandler<IAnime> = async (data) => {
-    data.id = setDynamicId(data.title);
-
+    let response;
     try {
-      const response = await postAnimesLocalStorage(data);
+      if (animeId) {
+        response = await editAnimesLocalStorage(data);
+        console.log(response);
+        return;
+      }
+      data.id = setDynamicId(data.title);
+      response = await postAnimesLocalStorage(data);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -94,15 +110,29 @@ export const AddAnime = () => {
           />
         </div>
         <div className="flex justify-between items-center">
-          <button className="btn-primary" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Guardando" : "Agregar"}
-          </button>
-          {/* <button className="btn-secondary">Editar</button> */}
+          {animeId ? (
+            <button
+              className="btn-secondary"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Editando" : "Editar"}
+            </button>
+          ) : (
+            <button
+              className="btn-primary"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Guardando" : "Agregar"}
+            </button>
+          )}
           <Link className="btn-red" to="/">
             Cancelar
           </Link>
         </div>
       </form>
+      <DevTool control={control} />
     </section>
   );
 };

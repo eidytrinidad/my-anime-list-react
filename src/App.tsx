@@ -17,7 +17,7 @@ const router = createBrowserRouter([
         element: <AddAnime />,
       },
       {
-        path: "/editar/:id",
+        path: "/editar/:animeId",
         element: <AddAnime />,
       },
     ],

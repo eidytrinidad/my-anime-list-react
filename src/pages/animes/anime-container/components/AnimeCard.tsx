@@ -1,7 +1,7 @@
-
 import { IAnime } from "../../../../interfaces/anime.interface";
 import noImage from "../../../../assets/no-image.jpg";
 import { titleCase } from "../../../../helpers";
+import { Link } from "react-router-dom";
 type AnimeCardProp = {
   anime: IAnime;
   onUpdate: (id: string) => void;
@@ -45,12 +45,13 @@ export const AnimeCard = ({ anime, onUpdate, onDelete }: AnimeCardProp) => {
       <div className="flex justify-between items-center p-3 bg-white">
         {anime.state ? (
           <>
-            <button
+            <Link
+              to={`/editar/${anime.id}`}
               className="btn-secondary"
               onClick={() => handleEdit(anime.id)}
             >
               Editar
-            </button>
+            </Link>
             <button className="btn-red" onClick={() => handleDelete(anime.id)}>
               Borrar
             </button>
