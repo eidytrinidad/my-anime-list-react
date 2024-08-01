@@ -37,17 +37,17 @@ export const editAnimesLocalStorage: IFunctionPostData<IAnime> = async (
 ) => {
   let animes = await getAnimesLocalStorage();
   return new Promise((resolve) => {
-    const updatedList = animes.map((anime: IAnime) => {
-      if (anime.id === data.id) {
-        return {
-          ...data,
-        };
-      }
-      return anime;
-    });
-
-    localStorage.setItem("animes", JSON.stringify(updatedList));
     setTimeout(() => {
+      const updatedList = animes.map((anime: IAnime) => {
+        if (anime.id === data.id) {
+          return {
+            ...data,
+          };
+        }
+        return anime;
+      });
+
+      localStorage.setItem("animes", JSON.stringify(updatedList));
       resolve({ success: true, data });
     }, 2000);
   });

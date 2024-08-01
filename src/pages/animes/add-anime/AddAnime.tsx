@@ -1,7 +1,7 @@
 // import { z } from "zod";
 
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { IAnime } from "../../../interfaces/anime.interface";
 import { urlRegex } from "../../../helpers";
 import {
@@ -16,6 +16,7 @@ import { DevTool } from "@hookform/devtools";
 // })
 export const AddAnime = () => {
   let { animeId } = useParams();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -26,13 +27,7 @@ export const AddAnime = () => {
     defaultValues: async () => {
       const response = await getAnimeLocalStorage(animeId);
       const anime = response;
-      return {
-        id: "",
-        title: anime?.title,
-        imgUrl: anime?.imgUrl,
-        genres: anime?.genres,
-        state: anime?.state,
-      };
+      return anime;
     },
   });
 
@@ -41,7 +36,9 @@ export const AddAnime = () => {
     try {
       if (animeId) {
         response = await editAnimesLocalStorage(data);
-        console.log(response);
+        if (response.success) {
+          navigate("/");
+        }
         return;
       }
       data.id = setDynamicId(data.title);
