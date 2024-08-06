@@ -10,9 +10,7 @@ export const getAnimesLocalStorage = async () => {
   return animeList;
 };
 
-
-
-export const getAnimeLocalStorage = async (id: string | undefined) => {
+export const getAnimeLocalStorage: any = async (id: string | undefined) => {
   let animes = await getAnimesLocalStorage();
 
   let selectedAnime;
