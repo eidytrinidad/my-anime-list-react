@@ -1,9 +1,10 @@
 import { DevTool } from "@hookform/devtools";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { urlRegex } from "../helpers";
-import { IAnime } from "../interfaces";
 import { getAnimeLocalStorage } from "../services";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { animeFormSchema } from "../schemas/animeFormZSchema";
+import { IAnime } from "../interfaces";
 
 type AnimeFormProps = {
   animeId: string | undefined;
@@ -11,6 +12,7 @@ type AnimeFormProps = {
 };
 
 const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
+
   const {
     register,
     handleSubmit,
@@ -22,7 +24,9 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
       const anime = response;
       return anime;
     },
+    resolver: zodResolver(animeFormSchema),
   });
+  
   return (
     <>
       <form
@@ -34,15 +38,12 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
             Titulo del Anime
             {errors.title && (
               <span className="text-xs text-red-500 ms-2">
-                (Titulo debe ser minimo 2 letras)
+                ({errors.title.message})
               </span>
             )}
           </label>
           <input
-            {...register("title", {
-              required: "Title is required",
-              minLength: 2,
-            })}
+            {...register("title")}
             className="border rounded-sm border-slate-400 outline-primary block w-full pl-2 py-1"
           />
         </div>
@@ -51,15 +52,12 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
             Url de la imagen
             {errors.imgUrl && (
               <span className="text-xs text-red-500 ms-2">
-                (Ingrese url valida)
+                ({errors.imgUrl.message})
               </span>
             )}
           </label>
           <input
-            {...register("imgUrl", {
-              required: "imgUrl is required",
-              pattern: urlRegex,
-            })}
+            {...register("imgUrl")}
             className="border rounded-sm border-slate-400 outline-primary block w-full pl-2 py-1"
           />
         </div>

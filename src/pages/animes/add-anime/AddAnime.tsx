@@ -1,6 +1,5 @@
 import { SubmitHandler } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { IAnime } from "../../../interfaces/anime.interface";
 
 import {
   editAnimesLocalStorage,
@@ -9,6 +8,7 @@ import {
 
 import { setDynamicId } from "../../../helpers";
 import AnimeForm from "../../../components/AnimeForm";
+import { IAnime } from "../../../interfaces";
 
 export const AddAnime = () => {
   let { animeId } = useParams();
@@ -23,9 +23,10 @@ export const AddAnime = () => {
       }
       return;
     }
-    
-    data.id = setDynamicId(data.title);
-    response = await postAnimesLocalStorage(data);
+    console.log(data);
+
+    // data.id = setDynamicId(data.title);
+    // response = await postAnimesLocalStorage(data);
   };
 
   return (
