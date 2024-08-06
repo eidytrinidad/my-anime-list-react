@@ -1,3 +1,3 @@
 export interface IFunctionGetData<T> {
-  (): Promise<T[]>;
+  (): Promise<T>;
 }
