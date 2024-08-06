@@ -34,20 +34,20 @@ export const AnimeCard = ({ anime }: AnimeCardProp) => {
       ) : null}
 
       <hr />
-      <div className="flex justify-between items-center p-3 bg-white">
-        {anime.state ? (
-          <>
-            <Link to={`/editar/${anime.id}`} className="btn-secondary">
-              Editar
-            </Link>
-            <button className="btn-red">Borrar</button>
-          </>
-        ) : (
+      {anime.state ? (
+        <div className="flex justify-between items-center p-3 bg-white">
           <Link to={`/editar/${anime.id}`} className="btn-secondary">
+            Editar
+          </Link>
+          <button className="btn-red">Borrar</button>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center p-3 bg-white">
+          <Link to={`/editar/${anime.id}`} className="btn-secondary ">
             Habilitar
           </Link>
-        )}
-      </div>
+        </div>
+      )}
     </article>
   );
 };

@@ -13,6 +13,10 @@ const router = createBrowserRouter([
         element: <AnimeContainer />,
       },
       {
+        path: "/inactivos",
+        element: <AnimeContainer />,
+      },
+      {
         path: "/agregar",
         element: <AddAnime />,
       },

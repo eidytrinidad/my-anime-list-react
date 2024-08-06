@@ -1,16 +1,30 @@
 {
    "data": [
       {
+         "title": "Naruto",
+         "imgUrl": "https://cdn.europosters.eu/image/1300/posters/naruto-shippuden-group-i129089.jpg",
+         "genres": "",
+         "state": false,
+         "id": "naruto6684"
+      },
+      {
+         "title": "Demon slayer",
+         "imgUrl": "https://m.media-amazon.com/images/M/MV5BZjZjNzI5MDctY2Y4YS00NmM4LTljMmItZTFkOTExNGI3ODRhXkEyXkFqcGdeQXVyNjc3MjQzNTI@._V1_.jpg",
+         "genres": "",
+         "state": true,
+         "id": "demonslayer658"
+      },
+      {
          "id": "onepunch4140",
-         "imgUrl": "https://i.pinimg.com/736x/71/20/52/712052e8f58932977a76b4958be52a31.jpg",
          "title": "one punch man",
+         "imgUrl": "https://i.pinimg.com/736x/71/20/52/712052e8f58932977a76b4958be52a31.jpg",
          "genres": "shonen",
          "state": true
       },
       {
          "id": "arifureta4008",
+         "title": "Arifureta Temporada 1",
          "imgUrl": "https://m.media-amazon.com/images/I/71oN-n7fX3L._AC_UF894,1000_QL80_.jpg",
-         "title": "Arifureta",
          "genres": "Accion, Aventura, Fantasia",
          "state": true
       },
