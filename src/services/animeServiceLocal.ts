@@ -16,21 +16,32 @@ export const getAnimesLocalStorage: IFunctionGetData<
   return animeList;
 };
 
-export const getAnimeLocalStorage: any = async (id: string | undefined) => {
-  let animes = await getAnimesLocalStorage();
+export const getAnimeLocalStorage: any = async (id: string) => {
+  try {
+    animeList = await getAnimesLocalStorage();
+    let selectedAnime = animeList.data?.find(
+      (anime: IAnime) => anime.id === id
+    );
 
-  let selectedAnime;
-  if (id) {
-    selectedAnime = animes.data?.find((anime: IAnime) => anime.id === id);
+    if (!selectedAnime) {
+      throw new Error("No existe un anime con ese id");
+    }
+    selectedAnime = animeList.data?.find((anime: IAnime) => anime.id === id);
+    return selectedAnime;
+  } catch (error) {
+    console.log(error);
   }
-
-  return selectedAnime;
 };
 
-export const postAnimesLocalStorage = async (data: IAnime) => {
+export const postAnimesLocalStorage: any = async (data: IAnime) => {
+  animeList = await getAnimesLocalStorage();
+  const formData = {
+    ...animeList,
+    data: [data, ...animeList.data],
+  };
+
   return new Promise((resolve) => {
-    const list = [data, ...animeList.data];
-    localStorage.setItem("animes", JSON.stringify(list));
+    localStorage.setItem("animes", JSON.stringify(formData));
     setTimeout(() => {
       resolve({ success: true, data });
     }, 2000);
@@ -38,10 +49,10 @@ export const postAnimesLocalStorage = async (data: IAnime) => {
 };
 
 export const editAnimesLocalStorage: any = async (data: IAnime) => {
-  let animes = await getAnimesLocalStorage();
+  animeList = await getAnimesLocalStorage();
   return new Promise((resolve) => {
     setTimeout(() => {
-      const updatedList = animes.data.map((anime: IAnime) => {
+      const updatedList = animeList.data.map((anime: IAnime) => {
         if (anime.id === data.id) {
           return {
             ...data,
@@ -49,8 +60,12 @@ export const editAnimesLocalStorage: any = async (data: IAnime) => {
         }
         return anime;
       });
+      const formData = {
+        ...animeList,
+        data: updatedList,
+      };
 
-      localStorage.setItem("animes", JSON.stringify(updatedList));
+      localStorage.setItem("animes", JSON.stringify(formData));
       resolve({ success: true, data });
     }, 2000);
   });

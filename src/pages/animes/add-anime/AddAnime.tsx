@@ -16,17 +16,20 @@ export const AddAnime = () => {
 
   const onSubmit: SubmitHandler<IAnime> = async (data) => {
     let response;
+
     if (animeId) {
-      response = await editAnimesLocalStorage(data);
+      const formData = { ...data, id: animeId };
+      response = await editAnimesLocalStorage(formData);
       if (response.success) {
         navigate("/");
       }
       return;
     }
-    console.log(data);
-
-    // data.id = setDynamicId(data.title);
-    // response = await postAnimesLocalStorage(data);
+    const formData = { ...data, id: setDynamicId(data.title) };
+    response = await postAnimesLocalStorage(formData);
+    if (response?.success) {
+      navigate("/");
+    }
   };
 
   return (

@@ -12,7 +12,6 @@ type AnimeFormProps = {
 };
 
 const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
-
   const {
     register,
     handleSubmit,
@@ -20,13 +19,21 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
     formState: { errors, isSubmitting },
   } = useForm<IAnime>({
     defaultValues: async () => {
-      const response = await getAnimeLocalStorage(animeId);
-      const anime = response;
-      return anime;
+      if (animeId) {
+        const response = await getAnimeLocalStorage(animeId);
+        const anime = response;
+        return anime;
+      }
+      return {
+        title: "",
+        genres: "",
+        imgUrl: "",
+        state: true,
+      };
     },
     resolver: zodResolver(animeFormSchema),
   });
-  
+
   return (
     <>
       <form
