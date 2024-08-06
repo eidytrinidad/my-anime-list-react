@@ -4,17 +4,9 @@ import { titleCase } from "../../../../helpers";
 import { Link } from "react-router-dom";
 type AnimeCardProp = {
   anime: IAnime;
-  onUpdate: (id: string) => void;
-  onDelete: (id: string) => void;
 };
 
-export const AnimeCard = ({ anime, onUpdate, onDelete }: AnimeCardProp) => {
-  const handleEdit = (id: string) => {
-    onUpdate(id);
-  };
-  const handleDelete = (id: string) => {
-    onDelete(id);
-  };
+export const AnimeCard = ({ anime }: AnimeCardProp) => {
   return (
     <article className="w-60 mb-7 card-shadow md:w-52 relative">
       <div className="w-full">
@@ -45,24 +37,15 @@ export const AnimeCard = ({ anime, onUpdate, onDelete }: AnimeCardProp) => {
       <div className="flex justify-between items-center p-3 bg-white">
         {anime.state ? (
           <>
-            <Link
-              to={`/editar/${anime.id}`}
-              className="btn-secondary"
-              onClick={() => handleEdit(anime.id)}
-            >
+            <Link to={`/editar/${anime.id}`} className="btn-secondary">
               Editar
             </Link>
-            <button className="btn-red" onClick={() => handleDelete(anime.id)}>
-              Borrar
-            </button>
+            <button className="btn-red">Borrar</button>
           </>
         ) : (
-          <button
-            className="btn-secondary"
-            onClick={() => handleEdit(anime.id)}
-          >
+          <Link to={`/editar/${anime.id}`} className="btn-secondary">
             Habilitar
-          </button>
+          </Link>
         )}
       </div>
     </article>

@@ -12,7 +12,6 @@ export const getAnimesLocalStorage: IFunctionGetData<
   IApiCollection<IAnime>
 > = async () => {
   animeList = JSON.parse(localStorage.getItem("animes") || "[]");
-  console.log(animeList);
 
   return animeList;
 };
