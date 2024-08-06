@@ -1,11 +1,11 @@
 import db from "../db/db.json";
-export const getAnimesLocalDB: IFunctionGetData = async () => {
+export const getAnimesLocalDB: IFunctionGetData<IAnime> = async () => {
   return db;
 };
 import { IFunctionGetData, IAnime } from "../interfaces";
 let animeList: IAnime[];
 
-export const getAnimesLocalStorage = async () => {
+export const getAnimesLocalStorage: IFunctionGetData<IAnime> = async () => {
   animeList = JSON.parse(localStorage.getItem("animes") || "[]");
   console.log(animeList);
 

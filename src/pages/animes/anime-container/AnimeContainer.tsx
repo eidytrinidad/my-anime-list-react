@@ -1,10 +1,10 @@
 import useFetch from "../../../hooks/useFetch";
-import {  getAnimesLocalStorage } from "../../../services";
+import { getAnimesLocalDB, getAnimesLocalStorage } from "../../../services";
 import { AnimeCard } from "./components/AnimeCard";
 
 export const AnimeContainer = () => {
   const { data } = useFetch({
-    getData: getAnimesLocalStorage,
+    getData: getAnimesLocalDB,
   });
 
   const handleUpdate = (id: string) => {

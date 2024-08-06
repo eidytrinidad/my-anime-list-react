@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { IFunctionGetData } from "../interfaces/functionGetData.interface";
 
-type initialState = {
-  data: any[];
+type initialState<T> = {
+  data: T[];
   isLoading: boolean;
   error?: unknown;
 };
 
-const useFetch = ({ getData }: { getData: IFunctionGetData }) => {
-  const [fetchData, setFetchData] = useState<initialState>({
+const useFetch = <T,>({ getData }: { getData: IFunctionGetData<T> }) => {
+  const [fetchData, setFetchData] = useState<initialState<T>>({
     data: [],
     isLoading: true,
     error: "",
