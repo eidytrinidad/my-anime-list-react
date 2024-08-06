@@ -5,10 +5,13 @@ export const getAnimesLocalDB: IFunctionGetData = async () => {
 import { IFunctionGetData, IFunctionPostData, IAnime } from "../interfaces";
 let animeList: IAnime[];
 
-export const getAnimesLocalStorage: any = async () => {
+export const getAnimesLocalStorage = async () => {
   animeList = JSON.parse(localStorage.getItem("animes") || "[]");
   return animeList;
 };
+
+
+
 export const getAnimeLocalStorage = async (id: string | undefined) => {
   let animes = await getAnimesLocalStorage();
 
@@ -20,9 +23,7 @@ export const getAnimeLocalStorage = async (id: string | undefined) => {
   return selectedAnime;
 };
 
-export const postAnimesLocalStorage: IFunctionPostData<IAnime> = async (
-  data: IAnime
-) => {
+export const postAnimesLocalStorage = async (data: IAnime) => {
   return new Promise((resolve) => {
     const list = [data, ...animeList];
     localStorage.setItem("animes", JSON.stringify(list));
@@ -32,9 +33,7 @@ export const postAnimesLocalStorage: IFunctionPostData<IAnime> = async (
   });
 };
 
-export const editAnimesLocalStorage: IFunctionPostData<IAnime> = async (
-  data: IAnime
-) => {
+export const editAnimesLocalStorage: any = async (data: IAnime) => {
   let animes = await getAnimesLocalStorage();
   return new Promise((resolve) => {
     setTimeout(() => {

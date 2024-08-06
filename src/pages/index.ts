@@ -1,3 +1,3 @@
-export * from "./ErrorPage";
+export * from "./errors/ErrorPage";
 export * from "./animes";
 export * from "./HomeLayout";

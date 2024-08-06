@@ -1,3 +1,3 @@
 export interface IFunctionPostData<T> {
-  (data: T): Promise<object>;
+  (data: T): Promise<T>;
 }
