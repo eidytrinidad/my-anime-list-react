@@ -2,11 +2,13 @@ import db from "../db/db.json";
 export const getAnimesLocalDB: IFunctionGetData = async () => {
   return db;
 };
-import { IFunctionGetData, IFunctionPostData, IAnime } from "../interfaces";
+import { IFunctionGetData, IAnime } from "../interfaces";
 let animeList: IAnime[];
 
 export const getAnimesLocalStorage = async () => {
   animeList = JSON.parse(localStorage.getItem("animes") || "[]");
+  console.log(animeList);
+
   return animeList;
 };
 
@@ -23,6 +25,15 @@ export const getAnimeLocalStorage: any = async (id: string | undefined) => {
 
 export const postAnimesLocalStorage = async (data: IAnime) => {
   return new Promise((resolve) => {
+    const dat = {
+      data: animeList,
+      paginacion: {
+        total: 3,
+        numeroPagina: 1,
+        limite: 10,
+        totalPaginas: 1,
+      },
+    };
     const list = [data, ...animeList];
     localStorage.setItem("animes", JSON.stringify(list));
     setTimeout(() => {

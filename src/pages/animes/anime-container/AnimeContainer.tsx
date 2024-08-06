@@ -1,5 +1,5 @@
 import useFetch from "../../../hooks/useFetch";
-import { getAnimesLocalDB, getAnimesLocalStorage } from "../../../services";
+import {  getAnimesLocalStorage } from "../../../services";
 import { AnimeCard } from "./components/AnimeCard";
 
 export const AnimeContainer = () => {
