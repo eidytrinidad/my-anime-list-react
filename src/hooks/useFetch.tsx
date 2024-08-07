@@ -4,7 +4,6 @@ import { IApiCollection, IPagination } from "../interfaces";
 
 type initialState<T> = {
   data: T[];
-  isLoading: boolean;
   pagination: IPagination;
   error?: unknown;
 };
@@ -14,6 +13,7 @@ type useFetchProps<T> = {
 };
 
 const useFetch = <T,>({ getData }: useFetchProps<T>) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [fetchData, setFetchData] = useState<initialState<T>>({
     data: [],
     pagination: {
@@ -22,37 +22,40 @@ const useFetch = <T,>({ getData }: useFetchProps<T>) => {
       limite: 1,
       totalPaginas: 1,
     },
-    isLoading: true,
+
     error: "",
   });
 
   const getFetchData = async () => {
     const response = await getData();
+    setIsLoading(true);
     try {
       setFetchData({
         data: response.data,
         pagination: response.paginacion,
-        isLoading: false,
         error: "",
       });
     } catch (error) {
       setFetchData({
         data: [],
         pagination: response.paginacion,
-        isLoading: false,
         error: error,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     getFetchData();
-  }, []);
+  }, [isLoading]);
 
   return {
+    ...fetchData,
     data: fetchData.data,
     pagination: fetchData.pagination,
-    isLoading: fetchData.isLoading,
+    isLoading,
+    setIsLoading,
     error: fetchData.error,
   };
 };

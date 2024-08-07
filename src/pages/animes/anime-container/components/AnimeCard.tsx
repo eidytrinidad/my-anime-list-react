@@ -3,11 +3,13 @@ import noImage from "../../../../assets/no-image.jpg";
 import { titleCase } from "../../../../helpers";
 import { Link } from "react-router-dom";
 import { deleteAnimesLocalStorage } from "../../../../services";
+
 type AnimeCardProp = {
   anime: IAnime;
+  onHandleDelete: (anime: IAnime) => void;
 };
 
-export const AnimeCard = ({ anime }: AnimeCardProp) => {
+export const AnimeCard = ({ anime, onHandleDelete }: AnimeCardProp) => {
   return (
     <article className="w-60 mb-7 card-shadow md:w-52 relative">
       <div className="w-full">
@@ -40,10 +42,7 @@ export const AnimeCard = ({ anime }: AnimeCardProp) => {
           <Link to={`/editar/${anime.id}`} className="btn-secondary">
             Editar
           </Link>
-          <button
-            className="btn-red"
-            onClick={() => deleteAnimesLocalStorage(anime)}
-          >
+          <button className="btn-red" onClick={() => onHandleDelete(anime)}>
             Borrar
           </button>
         </div>
