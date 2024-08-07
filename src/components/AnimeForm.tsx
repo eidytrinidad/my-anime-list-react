@@ -16,6 +16,7 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
     register,
     handleSubmit,
     control,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<IAnime>({
     defaultValues: async () => {
@@ -79,6 +80,23 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
             className="border rounded-sm border-slate-400 outline-primary block w-full pl-2 py-1"
           />
         </div>
+        {!getValues("state") ? (
+          <div className="mb-3">
+            <label
+              htmlFor="state"
+              className="font-semibold cursor-pointer flex items-center"
+            >
+              <input
+                type="checkbox"
+                id="state"
+                className="mr-2"
+                {...register("state")}
+              />
+              <span>Habilitar Anime</span>
+            </label>
+          </div>
+        ) : null}
+
         <div className="flex justify-between items-center">
           {animeId ? (
             <button

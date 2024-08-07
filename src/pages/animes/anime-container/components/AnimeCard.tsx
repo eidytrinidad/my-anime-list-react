@@ -2,6 +2,7 @@ import { IAnime } from "../../../../interfaces/anime.interface";
 import noImage from "../../../../assets/no-image.jpg";
 import { titleCase } from "../../../../helpers";
 import { Link } from "react-router-dom";
+import { deleteAnimesLocalStorage } from "../../../../services";
 type AnimeCardProp = {
   anime: IAnime;
 };
@@ -39,7 +40,12 @@ export const AnimeCard = ({ anime }: AnimeCardProp) => {
           <Link to={`/editar/${anime.id}`} className="btn-secondary">
             Editar
           </Link>
-          <button className="btn-red">Borrar</button>
+          <button
+            className="btn-red"
+            onClick={() => deleteAnimesLocalStorage(anime)}
+          >
+            Borrar
+          </button>
         </div>
       ) : (
         <div className="flex justify-center items-center p-3 bg-white">

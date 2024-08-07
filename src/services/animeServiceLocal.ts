@@ -1,3 +1,4 @@
+import { AnimeState } from "../constants/anime";
 import db from "../db/db.json";
 export const getAnimesLocalDB: IFunctionGetData<
   IApiCollection<IAnime>
@@ -56,6 +57,29 @@ export const editAnimesLocalStorage: any = async (data: IAnime) => {
         if (anime.id === data.id) {
           return {
             ...data,
+          };
+        }
+        return anime;
+      });
+      const formData = {
+        ...animeList,
+        data: updatedList,
+      };
+
+      localStorage.setItem("animes", JSON.stringify(formData));
+      resolve({ success: true, data });
+    }, 2000);
+  });
+};
+export const deleteAnimesLocalStorage: any = async (data: IAnime) => {
+  animeList = await getAnimesLocalStorage();
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const updatedList = animeList.data.map((anime: IAnime) => {
+        if (anime.id === data.id) {
+          return {
+            ...data,
+            state: AnimeState.INACTIVE,
           };
         }
         return anime;
