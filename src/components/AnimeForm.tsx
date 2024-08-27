@@ -1,7 +1,7 @@
 import { DevTool } from "@hookform/devtools";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { getAnimeLocalStorage } from "../services";
+import { getAnimeDB, getAnimeLocalStorage } from "../services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { animeFormSchema } from "../schemas/animeFormZSchema";
 import { IAnime } from "../interfaces";
@@ -21,7 +21,7 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
   } = useForm<IAnime>({
     defaultValues: async () => {
       if (animeId) {
-        const response = await getAnimeLocalStorage(animeId);
+        const response = await getAnimeDB(animeId);
         const anime = response;
         return anime;
       }

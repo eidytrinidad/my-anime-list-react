@@ -4,4 +4,5 @@ export interface IAnime {
   title: string;
   genres: string;
   state: boolean;
+  _id?: string;
 }

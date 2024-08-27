@@ -1,6 +1,7 @@
 import useFetch from "../../../hooks/useFetch";
 import {
   deleteAnimesLocalStorage,
+  getAnimesDB,
   getAnimesLocalDB,
   getAnimesLocalStorage,
 } from "../../../services";
@@ -20,7 +21,7 @@ const initialState = {
 };
 export const AnimeContainer = () => {
   const { data, setIsLoading } = useFetch({
-    getData: getAnimesLocalDB,
+    getData: getAnimesDB,
     initialState,
   });
 
