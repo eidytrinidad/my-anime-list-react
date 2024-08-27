@@ -1,30 +1,15 @@
 import { useEffect, useState } from "react";
 import { IFunctionGetData } from "../interfaces/functionGetData.interface";
-import { IApiCollection, IPagination } from "../interfaces";
-
-type initialState<T> = {
-  data: T[];
-  pagination: IPagination;
-  error?: unknown;
-};
+import { IApiCollection, } from "../interfaces";
 
 type useFetchProps<T> = {
   getData: IFunctionGetData<IApiCollection<T>>;
+  initialState: IApiCollection<T>;
 };
 
-const useFetch = <T,>({ getData }: useFetchProps<T>) => {
+const useFetch = <T,>({ getData, initialState }: useFetchProps<T>) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [fetchData, setFetchData] = useState<initialState<T>>({
-    data: [],
-    pagination: {
-      total: 1,
-      numeroPagina: 1,
-      limite: 1,
-      totalPaginas: 1,
-    },
-
-    error: "",
-  });
+  const [fetchData, setFetchData] = useState(initialState);
 
   const getFetchData = async () => {
     const response = await getData();
@@ -32,14 +17,12 @@ const useFetch = <T,>({ getData }: useFetchProps<T>) => {
     try {
       setFetchData({
         data: response.data,
-        pagination: response.paginacion,
-        error: "",
+        paginacion: response.paginacion,
       });
     } catch (error) {
       setFetchData({
         data: [],
-        pagination: response.paginacion,
-        error: error,
+        paginacion: response.paginacion,
       });
     } finally {
       setIsLoading(false);
@@ -53,10 +36,9 @@ const useFetch = <T,>({ getData }: useFetchProps<T>) => {
   return {
     ...fetchData,
     data: fetchData.data,
-    pagination: fetchData.pagination,
+    pagination: fetchData.paginacion,
     isLoading,
     setIsLoading,
-    error: fetchData.error,
   };
 };
 

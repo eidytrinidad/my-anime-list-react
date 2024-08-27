@@ -1,13 +1,15 @@
 import { AnimeState } from "../constants/anime";
 import db from "../db/db.json";
+
+import { IFunctionGetData, IAnime } from "../interfaces";
+import { IApiCollection } from "../interfaces/collection.interface";
+let animeList: IApiCollection<IAnime>;
+
 export const getAnimesLocalDB: IFunctionGetData<
   IApiCollection<IAnime>
 > = async () => {
   return db;
 };
-import { IFunctionGetData, IAnime } from "../interfaces";
-import { IApiCollection } from "../interfaces/collection.interface";
-let animeList: IApiCollection<IAnime>;
 
 export const getAnimesLocalStorage: IFunctionGetData<
   IApiCollection<IAnime>

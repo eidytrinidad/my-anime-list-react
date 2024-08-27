@@ -1,5 +1,5 @@
 {
-   "data": [
+   "data": 
       [
          {
             "id": "onepunch4140",
@@ -134,7 +134,7 @@
             "genres": "Sombies, Comedia",
             "state": true
          }
-      ]
+      
    ],
    "paginacion": {
       "total": 3,

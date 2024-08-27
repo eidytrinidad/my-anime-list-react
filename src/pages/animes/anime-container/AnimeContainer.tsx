@@ -1,5 +1,3 @@
-import { useLocation } from "react-router-dom";
-import { AnimeState } from "../../../constants/anime";
 import useFetch from "../../../hooks/useFetch";
 import {
   deleteAnimesLocalStorage,
@@ -8,16 +6,24 @@ import {
 } from "../../../services";
 import { AnimeCard } from "./components/AnimeCard";
 import { IAnime } from "../../../interfaces";
-import { Confirm } from "notiflix";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import { showConfirm } from "../../../helpers";
 
+const initialState = {
+  data: [],
+  paginacion: {
+    total: 1,
+    numeroPagina: 1,
+    limite: 1,
+    totalPaginas: 1,
+  },
+};
 export const AnimeContainer = () => {
   const { data, setIsLoading } = useFetch({
-    getData: getAnimesLocalStorage,
+    getData: getAnimesLocalDB,
+    initialState,
   });
 
-  let location = useLocation();
   const handleDelete = (anime: IAnime) => {
     showConfirm("Borrar Anime").then(async () => {
       Loading.standard("Loading...");
@@ -32,29 +38,15 @@ export const AnimeContainer = () => {
   return (
     <section className="w-full my-4">
       <div className="flex flex-col md:flex-row md:justify-around px-2 md:flex-wrap items center">
-        {location.pathname === "/"
-          ? data.map((anime) => {
-              if (anime.state === AnimeState.ACTIVE) {
-                return (
-                  <AnimeCard
-                    onHandleDelete={handleDelete}
-                    anime={anime}
-                    key={anime.id}
-                  />
-                );
-              }
-            })
-          : data.map((anime) => {
-              if (anime.state === AnimeState.INACTIVE) {
-                return (
-                  <AnimeCard
-                    onHandleDelete={handleDelete}
-                    anime={anime}
-                    key={anime.id}
-                  />
-                );
-              }
-            })}
+        {data.map((anime) => {
+          return (
+            <AnimeCard
+              onHandleDelete={handleDelete}
+              anime={anime}
+              key={anime.id}
+            />
+          );
+        })}
       </div>
     </section>
   );
