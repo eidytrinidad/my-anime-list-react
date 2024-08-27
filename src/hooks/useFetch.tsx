@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IFunctionGetData } from "../interfaces/functionGetData.interface";
-import { IApiCollection, } from "../interfaces";
-
+import { IApiCollection } from "../interfaces";
+import { Loading } from "notiflix/build/notiflix-loading-aio";
 type useFetchProps<T> = {
   getData: IFunctionGetData<IApiCollection<T>>;
   initialState: IApiCollection<T>;
@@ -12,20 +12,19 @@ const useFetch = <T,>({ getData, initialState }: useFetchProps<T>) => {
   const [fetchData, setFetchData] = useState(initialState);
 
   const getFetchData = async () => {
-    const response = await getData();
     setIsLoading(true);
+    Loading.standard("Loading...");
     try {
+      const response = await getData();
       setFetchData({
         data: response.data,
         paginacion: response.paginacion,
       });
     } catch (error) {
-      setFetchData({
-        data: [],
-        paginacion: response.paginacion,
-      });
+      setFetchData(initialState);
     } finally {
       setIsLoading(false);
+      Loading.remove();
     }
   };
 
