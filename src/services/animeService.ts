@@ -17,3 +17,51 @@ export const getAnimeDB: getAnimeDBType = async (animeId: string) => {
 
   return animeData.data;
 };
+
+export const postAnimesDB = async (anime: IAnime) => {
+  try {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...anime }),
+    };
+    const response = await fetch(
+      `http://localhost:4500/api/v1/animes`,
+      requestOptions
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const editAnimesDB = async (anime: IAnime) => {
+  try {
+    const requestOptions = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...anime }),
+    };
+    const response = await fetch(
+      `http://localhost:4500/api/v1/animes/${anime.id}`,
+      requestOptions
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const deleteAnimeDB = async (anime: IAnime) => {
+  try {
+    const requestOptions = {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch(
+      `http://localhost:4500/api/v1/animes/${anime.id}`,
+      requestOptions
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

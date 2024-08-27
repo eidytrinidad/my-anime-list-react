@@ -1,10 +1,5 @@
 import useFetch from "../../../hooks/useFetch";
-import {
-  deleteAnimesLocalStorage,
-  getAnimesDB,
-  getAnimesLocalDB,
-  getAnimesLocalStorage,
-} from "../../../services";
+import { deleteAnimeDB, getAnimesDB } from "../../../services";
 import { AnimeCard } from "./components/AnimeCard";
 import { IAnime } from "../../../interfaces";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
@@ -28,10 +23,10 @@ export const AnimeContainer = () => {
   const handleDelete = (anime: IAnime) => {
     showConfirm("Borrar Anime").then(async () => {
       Loading.standard("Loading...");
-      const response = await deleteAnimesLocalStorage(anime);
-      if (response?.success) {
+      const response = await deleteAnimeDB(anime);
+      if (response?.ok) {
         setIsLoading(true);
-        //Loading.remove();
+        Loading.remove();
       }
     });
   };

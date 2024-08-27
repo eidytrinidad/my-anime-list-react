@@ -5,6 +5,7 @@ import { getAnimeDB, getAnimeLocalStorage } from "../services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { animeFormSchema } from "../schemas/animeFormZSchema";
 import { IAnime } from "../interfaces";
+import { useEffect } from "react";
 
 type AnimeFormProps = {
   animeId: string | undefined;
@@ -17,23 +18,26 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
     handleSubmit,
     control,
     getValues,
+    setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<IAnime>({
-    defaultValues: async () => {
-      if (animeId) {
-        const response = await getAnimeDB(animeId);
-        const anime = response;
-        return anime;
-      }
-      return {
-        title: "",
-        genres: "",
-        imgUrl: "",
-        state: true,
-      };
-    },
     resolver: zodResolver(animeFormSchema),
   });
+
+  const getAnimeData = async () => {
+    reset();
+    if (animeId) {
+      const response = await getAnimeDB(animeId);
+      const anime = response;
+      Object.entries(anime).forEach(([name, value]) =>
+        setValue(name as keyof IAnime, value as keyof IAnime)
+      );
+    }
+  };
+  useEffect(() => {
+    getAnimeData();
+  }, [animeId]);
 
   return (
     <>
@@ -80,7 +84,7 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
             className="border rounded-sm border-slate-400 outline-primary block w-full pl-2 py-1"
           />
         </div>
-        {!getValues("state") ? (
+        {getValues("state") === false ? (
           <div className="mb-3">
             <label
               htmlFor="state"
