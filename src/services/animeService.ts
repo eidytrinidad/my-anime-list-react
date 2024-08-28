@@ -2,11 +2,24 @@ import { IFunctionGetData, IApiCollection, IAnime } from "../interfaces";
 import { IApiData } from "../interfaces/data.interface";
 
 export type getAnimeDBType = (animeId: string) => Promise<any>;
+export interface ISearchParams {
+  limite?: number;
+  numeroPagina?: number;
+}
 
-export const getAnimesDB: IFunctionGetData<
-  IApiCollection<IAnime>
-> = async () => {
-  const resp = await fetch("http://localhost:4500/api/v1/animes");
+export const getAnimesDB: IFunctionGetData<IApiCollection<IAnime>> = async (
+  params: Record<string, any>
+) => {
+  console.log(params);
+  let queryString = new URLSearchParams();
+  for (let key in params) {
+    queryString.append(key, params[key]);
+  }
+
+
+  const resp = await fetch(
+    `http://localhost:4500/api/v1/animes?${queryString.toString()}`
+  );
   const animeData: IApiCollection<IAnime> = await resp.json();
   return animeData;
 };

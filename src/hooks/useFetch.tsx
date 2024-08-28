@@ -9,14 +9,15 @@ type useFetchProps<T> = {
   initialState: IApiCollection<T>;
 };
 
-const useFetch = <T,>({ getData, initialState }: useFetchProps<T>) => {
+const useFetch = <T, P>({ getData, initialState }: useFetchProps<T>) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [searchParams, setSearchParams] = useState<P>();
   const [fetchData, setFetchData] = useState(initialState);
 
   const getFetchData = async () => {
     Loading.standard("Loading...");
     try {
-      const response = await getData();
+      const response = await getData(searchParams);
       setFetchData({
         data: response.data,
         paginacion: response.paginacion,
@@ -35,14 +36,15 @@ const useFetch = <T,>({ getData, initialState }: useFetchProps<T>) => {
 
   useEffect(() => {
     getFetchData();
-  }, [isLoading]);
+  }, [isLoading, searchParams]);
 
   return {
     ...fetchData,
     data: fetchData.data,
-    pagination: fetchData.paginacion,
+    paginacion: fetchData.paginacion,
     isLoading,
     setIsLoading,
+    setSearchParams,
   };
 };
 

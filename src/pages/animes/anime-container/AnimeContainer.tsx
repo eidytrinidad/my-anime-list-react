@@ -1,9 +1,10 @@
 import useFetch from "../../../hooks/useFetch";
-import { deleteAnimeDB, getAnimesDB } from "../../../services";
+import { deleteAnimeDB, getAnimesDB, ISearchParams } from "../../../services";
 import { AnimeCard } from "./components/AnimeCard";
 import { IAnime } from "../../../interfaces";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import { showConfirm } from "../../../helpers";
+import Pagination from "../../../components/Pagination";
 
 const initialState = {
   data: [],
@@ -15,7 +16,10 @@ const initialState = {
   },
 };
 export const AnimeContainer = () => {
-  const { data, setIsLoading } = useFetch({
+  const { data, setIsLoading, paginacion, setSearchParams } = useFetch<
+    IAnime,
+    ISearchParams
+  >({
     getData: getAnimesDB,
     initialState,
   });
@@ -44,6 +48,8 @@ export const AnimeContainer = () => {
           );
         })}
       </div>
+  
+      <Pagination />
     </section>
   );
 };
