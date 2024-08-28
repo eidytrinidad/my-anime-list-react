@@ -1,3 +1,4 @@
+import { AnimeState } from "../constants/anime";
 import { IFunctionGetData, IApiCollection, IAnime } from "../interfaces";
 import { IApiData } from "../interfaces/data.interface";
 
@@ -11,7 +12,7 @@ export const getAnimesDB: IFunctionGetData<IApiCollection<IAnime>> = async (
   params: Record<string, any>
 ) => {
   let queryString = new URLSearchParams();
-  
+
   for (let key in params) {
     queryString.append(key, params[key]);
   }
@@ -64,10 +65,15 @@ export const editAnimesDB = async (anime: IAnime) => {
   }
 };
 export const deleteAnimeDB = async (anime: IAnime) => {
+  const data = {
+    ...anime,
+    state: AnimeState.INACTIVE,
+  };
   try {
     const requestOptions = {
-      method: "DELETE",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     };
     const response = await fetch(
       `http://localhost:4500/api/v1/animes/${anime.id}`,
