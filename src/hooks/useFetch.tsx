@@ -11,7 +11,10 @@ type useFetchProps<T> = {
 
 const useFetch = <T, P>({ getData, initialState }: useFetchProps<T>) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [searchParams, setSearchParams] = useState<P>();
+  const [searchParams, setSearchParams] = useState({
+    numeroPagina: 1,
+    limite: 1,
+  });
   const [fetchData, setFetchData] = useState(initialState);
 
   const getFetchData = async () => {
@@ -45,6 +48,7 @@ const useFetch = <T, P>({ getData, initialState }: useFetchProps<T>) => {
     isLoading,
     setIsLoading,
     setSearchParams,
+    searchParams,
   };
 };
 

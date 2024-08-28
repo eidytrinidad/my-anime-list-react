@@ -16,13 +16,11 @@ const initialState = {
   },
 };
 export const AnimeContainer = () => {
-  const { data, setIsLoading, paginacion, setSearchParams } = useFetch<
-    IAnime,
-    ISearchParams
-  >({
-    getData: getAnimesDB,
-    initialState,
-  });
+  const { data, setIsLoading, paginacion, setSearchParams, searchParams } =
+    useFetch<IAnime, ISearchParams>({
+      getData: getAnimesDB,
+      initialState,
+    });
 
   const handleDelete = (anime: IAnime) => {
     showConfirm("Borrar Anime").then(async () => {
@@ -33,6 +31,15 @@ export const AnimeContainer = () => {
         Loading.remove();
       }
     });
+  };
+
+  const handlePageChange = (page: number) => {
+    if (page !== paginacion.numeroPagina) {
+      setSearchParams({
+        ...searchParams,
+        numeroPagina: page,
+      });
+    }
   };
 
   return (
@@ -48,8 +55,12 @@ export const AnimeContainer = () => {
           );
         })}
       </div>
-  
-      <Pagination />
+      {data.length > 0 && (
+        <Pagination
+          paginacion={paginacion}
+          onHandlePageChange={handlePageChange}
+        />
+      )}
     </section>
   );
 };
