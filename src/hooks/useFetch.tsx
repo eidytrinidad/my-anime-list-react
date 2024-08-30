@@ -4,17 +4,19 @@ import { IApiCollection } from "../interfaces";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import { Notify } from "notiflix";
 
-type useFetchProps<T> = {
+type useFetchProps<T, P> = {
   getData: IFunctionGetData<IApiCollection<T>>;
   initialState: IApiCollection<T>;
+  searchParamsInitialState: P;
 };
 
-const useFetch = <T, P>({ getData, initialState }: useFetchProps<T>) => {
+const useFetch = <T, P>({
+  getData,
+  initialState,
+  searchParamsInitialState,
+}: useFetchProps<T, P>) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [searchParams, setSearchParams] = useState({
-    numeroPagina: 1,
-    limite: 1,
-  });
+  const [searchParams, setSearchParams] = useState<P>(searchParamsInitialState);
   const [fetchData, setFetchData] = useState(initialState);
 
   const getFetchData = async () => {
