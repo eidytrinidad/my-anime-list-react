@@ -18,25 +18,22 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
     handleSubmit,
     control,
     getValues,
-    setValue,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<IAnime>({
     resolver: zodResolver(animeFormSchema),
+    defaultValues: async () => {
+      reset();
+      if (animeId) {
+        const response = await getAnimeDB(animeId);
+        const anime = response;
+        return anime;
+      }
+    },
   });
 
-  const getAnimeData = async () => {
-    reset();
-    if (animeId) {
-      const response = await getAnimeDB(animeId);
-      const anime = response;
-      Object.entries(anime).forEach(([name, value]) =>
-        setValue(name as keyof IAnime, value as keyof IAnime)
-      );
-    }
-  };
   useEffect(() => {
-    getAnimeData();
+    reset();
   }, [animeId]);
 
   return (
@@ -84,7 +81,7 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
             className="border rounded-sm border-slate-400 outline-primary block w-full pl-2 py-1"
           />
         </div>
-        {getValues("state") === false ? (
+        {!getValues("state") ? (
           <div className="mb-3">
             <label
               htmlFor="state"

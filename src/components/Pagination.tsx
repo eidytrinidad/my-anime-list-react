@@ -22,7 +22,7 @@ const Pagination = ({ paginacion, onHandlePageChange }: PaginationProps) => {
   };
 
   const handleChangePageLeft = () => {
-    if (paginacion.numeroPagina >= paginacion.totalPaginas) {
+    if (paginacion.numeroPagina > 1) {
       onHandlePageChange(paginacion.numeroPagina - 1);
     }
   };
