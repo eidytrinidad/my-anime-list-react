@@ -23,7 +23,6 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
   } = useForm<IAnime>({
     resolver: zodResolver(animeFormSchema),
     defaultValues: async () => {
-      reset();
       if (animeId) {
         const response = await getAnimeDB(animeId);
         const anime = response;
@@ -33,7 +32,12 @@ const AnimeForm = ({ animeId, onSubmit }: AnimeFormProps) => {
   });
 
   useEffect(() => {
-    reset();
+    reset({
+      title: "",
+      genres: "",
+      imgUrl: "",
+      state: true,
+    });
   }, [animeId]);
 
   return (

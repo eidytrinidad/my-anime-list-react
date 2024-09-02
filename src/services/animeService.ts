@@ -6,6 +6,7 @@ export type getAnimeDBType = (animeId: string) => Promise<any>;
 export interface ISearchParams {
   limite?: number;
   numeroPagina?: number;
+  state?: string;
 }
 
 export const getAnimesDB: IFunctionGetData<IApiCollection<IAnime>> = async (
