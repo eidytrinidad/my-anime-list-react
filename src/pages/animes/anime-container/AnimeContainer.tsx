@@ -20,12 +20,18 @@ const searchParamsInitialState = {
   limite: 2,
 };
 export const AnimeContainer = () => {
-  const { data, setIsLoading, paginacion, setSearchParams, searchParams } =
-    useFetch<IAnime, ISearchParams>({
-      getData: getAnimesDB,
-      initialState,
-      searchParamsInitialState,
-    });
+  const {
+    data,
+    setIsLoading,
+    paginacion,
+    setSearchParams,
+    searchParams,
+    isLoading,
+  } = useFetch<IAnime, ISearchParams>({
+    getData: getAnimesDB,
+    initialState,
+    searchParamsInitialState,
+  });
 
   const handleDelete = (anime: IAnime) => {
     showConfirm("Borrar Anime").then(async () => {
@@ -67,7 +73,7 @@ export const AnimeContainer = () => {
         </select>
       </div>
       <div className="flex flex-col items-center px-2  md:justify-around  md:flex-wrap  md:flex-row ">
-        {data.length === 0 ? (
+        {data.length === 0 && !isLoading ? (
           <div className="flex items-center justify-center min-h-full mt-40">
             <h4 className="font-bold text-lg sm:text-xl md:text-2xl">
               No hay registros disponibles
