@@ -1,7 +1,9 @@
+import axios from "axios";
 import { AnimeState } from "../constants/anime";
 import { IFunctionGetData, IApiCollection, IAnime } from "../interfaces";
 import { IApiData } from "../interfaces/data.interface";
 import { Loading, Notify } from "notiflix";
+
 export type getAnimeDBType = (animeId: string) => Promise<any>;
 export interface ISearchParams {
   limite?: number;
@@ -86,12 +88,15 @@ export const deleteAnimeDB = async (anime: IAnime) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
-    const response = await fetch(
+    const response = await axios.patch(
       `http://localhost:4500/api/v1/animes/${anime.id}`,
       requestOptions
     );
-    return response;
-  } catch (error) {
-    console.log(error);
+     return response;
+  } catch (error: any) {
+    const { msg } = error.response.data;
+    Notify.failure(msg, { timeout: 5000 });
+  } finally {
+    Loading.remove();
   }
 };
