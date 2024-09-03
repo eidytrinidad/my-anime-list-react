@@ -11,7 +11,7 @@ import {
 import { setDynamicId } from "../../../helpers";
 import AnimeForm from "../../../components/AnimeForm";
 import { IAnime } from "../../../interfaces";
-import { Loading } from "notiflix";
+
 
 export const AddAnime = () => {
   let { animeId } = useParams();
@@ -19,7 +19,7 @@ export const AddAnime = () => {
 
   const onSubmit: SubmitHandler<IAnime> = async (data) => {
     let response;
-    Loading.circle();
+
     if (animeId) {
       const formData = { ...data, id: animeId };
       response = await editAnimesDB(formData);
@@ -37,7 +37,6 @@ export const AddAnime = () => {
     if (response?.ok) {
       navigate("/");
     }
-    Loading.remove();
   };
 
   return (

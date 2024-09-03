@@ -1,7 +1,7 @@
 import { AnimeState } from "../constants/anime";
 import { IFunctionGetData, IApiCollection, IAnime } from "../interfaces";
 import { IApiData } from "../interfaces/data.interface";
-
+import { Loading, Notify } from "notiflix";
 export type getAnimeDBType = (animeId: string) => Promise<any>;
 export interface ISearchParams {
   limite?: number;
@@ -50,19 +50,29 @@ export const postAnimesDB = async (anime: IAnime) => {
   }
 };
 export const editAnimesDB = async (anime: IAnime) => {
-  try {
-    const requestOptions = {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...anime }),
-    };
-    const response = await fetch(
-      `http://localhost:4500/api/v1/animes/${anime.id}`,
-      requestOptions
-    );
-    return response;
-  } catch (error) {
-    console.log(error);
+  Loading.circle();
+  const requestOptions = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({ ...anime }),
+  };
+  const res = await fetch(
+    `http://localhost:4500/api/v1/animes/${anime.id}`,
+    requestOptions
+  );
+  if (!res.ok) {
+    Loading.remove();
+    return res.text().then((text: any) => {
+      Notify.failure(JSON.parse(text).msg, { timeout: 5000 });
+
+      throw new Error(text);
+    });
+  } else {
+    Loading.remove();
+    return res;
   }
 };
 export const deleteAnimeDB = async (anime: IAnime) => {
