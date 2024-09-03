@@ -17,7 +17,7 @@ const initialState = {
 };
 const searchParamsInitialState = {
   numeroPagina: 1,
-  limite: 1,
+  limite: 2,
 };
 export const AnimeContainer = () => {
   const { data, setIsLoading, paginacion, setSearchParams, searchParams } =
@@ -30,7 +30,7 @@ export const AnimeContainer = () => {
   const handleDelete = (anime: IAnime) => {
     showConfirm("Borrar Anime").then(async () => {
       Loading.standard("Loading...");
-      const response = await deleteAnimeDB(anime);
+      const response: any = await deleteAnimeDB(anime);
       if (response?.ok) {
         setIsLoading(true);
         Loading.remove();
@@ -66,16 +66,24 @@ export const AnimeContainer = () => {
           <option value="false">Inactivos</option>
         </select>
       </div>
-      <div className="flex flex-col md:flex-row md:justify-around px-2 md:flex-wrap items center">
-        {data.map((anime) => {
-          return (
-            <AnimeCard
-              onHandleDelete={handleDelete}
-              anime={anime}
-              key={anime.id}
-            />
-          );
-        })}
+      <div className="flex flex-col items-center px-2  md:justify-around  md:flex-wrap  md:flex-row ">
+        {data.length === 0 ? (
+          <div className="flex items-center justify-center min-h-full mt-40">
+            <h4 className="font-bold text-lg sm:text-xl md:text-2xl">
+              No hay registros disponibles
+            </h4>
+          </div>
+        ) : (
+          data.map((anime) => {
+            return (
+              <AnimeCard
+                onHandleDelete={handleDelete}
+                anime={anime}
+                key={anime.id}
+              />
+            );
+          })
+        )}
       </div>
       {data.length > 0 && (
         <Pagination

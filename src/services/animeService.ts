@@ -4,6 +4,9 @@ import { IFunctionGetData, IApiCollection, IAnime } from "../interfaces";
 import { IApiData } from "../interfaces/data.interface";
 import { Loading, Notify } from "notiflix";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+const baseUrl = `${apiUrl}/animes`;
+
 export type getAnimeDBType = (animeId: string) => Promise<any>;
 export interface ISearchParams {
   limite?: number;
@@ -20,16 +23,14 @@ export const getAnimesDB: IFunctionGetData<IApiCollection<IAnime>> = async (
     queryString.append(key, params[key]);
   }
 
-  const resp = await fetch(
-    `http://localhost:4500/api/v1/animes?${queryString.toString()}`
-  );
+  const resp = await fetch(`${baseUrl}?${queryString.toString()}`);
   const animeData: IApiCollection<IAnime> = await resp.json();
 
   return animeData;
 };
 
 export const getAnimeDB: getAnimeDBType = async (animeId: string) => {
-  const resp = await fetch(`http://localhost:4500/api/v1/animes/${animeId}`);
+  const resp = await fetch(`${baseUrl}/${animeId}`);
   const animeData: IApiData<IAnime> = await resp.json();
 
   return animeData.data;
@@ -42,10 +43,7 @@ export const postAnimesDB = async (anime: IAnime) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...anime }),
     };
-    const response = await fetch(
-      `http://localhost:4500/api/v1/animes`,
-      requestOptions
-    );
+    const response = await fetch(`${baseUrl}`, requestOptions);
     return response;
   } catch (error) {
     console.log(error);
@@ -61,10 +59,7 @@ export const editAnimesDB = async (anime: IAnime) => {
 
     body: JSON.stringify({ ...anime }),
   };
-  const res = await fetch(
-    `http://localhost:4500/api/v1/animes/${anime.id}`,
-    requestOptions
-  );
+  const res = await fetch(`${baseUrl}/${anime.id}`, requestOptions);
   if (!res.ok) {
     Loading.remove();
     return res.text().then((text: any) => {
@@ -89,10 +84,10 @@ export const deleteAnimeDB = async (anime: IAnime) => {
       body: JSON.stringify(data),
     };
     const response = await axios.patch(
-      `http://localhost:4500/api/v1/animes/${anime.id}`,
+      `${baseUrl}/${anime.id}`,
       requestOptions
     );
-     return response;
+    return response;
   } catch (error: any) {
     const { msg } = error.response.data;
     Notify.failure(msg, { timeout: 5000 });
