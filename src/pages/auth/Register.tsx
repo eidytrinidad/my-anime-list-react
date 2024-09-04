@@ -1,18 +1,28 @@
-import { useForm } from "react-hook-form";
-
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { IUser } from "../../interfaces";
+import { registerUser } from "../../services/authService";
 export const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<IUser>({
     defaultValues: {
-      user: "",
+      name: "",
       email: "",
       password: "",
     },
   });
-  const onSubmit = () => {};
+  const onSubmit: SubmitHandler<IUser> = async (data) => {
+    const response: any = await registerUser(data);
+    if (response) {
+      navigate("/");
+    }
+  };
   return (
     <>
       <section className="w-full flex items-center justify-center">
@@ -22,56 +32,82 @@ export const Register = () => {
         >
           <div className="mb-3">
             <label htmlFor="title" className="font-semibold text-xl">
-              Usuario
-              {errors.user && (
+              Nombre de usario
+              {errors.name && (
                 <span className="text-xs text-red-500 ms-2">
-                  ({errors.user.message})
+                  ({errors.name.message})
                 </span>
               )}
             </label>
             <input
               type="text"
-              {...register("user", { required: "Usuario es requrido" })}
+              className="border rounded-sm border-slate-400 outline-primary block w-full pl-2 py-1"
+              {...register("name", {
+                required: "Nombre de usuario es requerido",
+              })}
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="email">
+            <label htmlFor="email" className="font-semibold text-xl">
               Email
               {errors.email && (
                 <span className="text-xs text-red-500 ms-2">
-                  {errors.email.message}
+                  ({errors.email.message})
                 </span>
               )}
             </label>
             <input
               type="text"
-              {...register("email", { required: "Email is required" })}
+              className="border rounded-sm border-slate-400 outline-primary block w-full pl-2 py-1"
+              {...register("email", { required: "Email es requerido" })}
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="password">
+            <label htmlFor="password" className="font-semibold text-xl">
               Password
               {errors.password && (
-                <span className="text-xs text-red ms-2">
-                  {errors.password.message}
+                <span className="text-xs text-red-500 ms-2">
+                  ({errors.password.message})
                 </span>
               )}
             </label>
-            <input
-              type="text"
-              {...register("email", {
-                required: "Password is requiered",
-                min: { value: 6, message: "Password minumum is 6 digts" },
-              })}
-            />
+            <div className="flex">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="border rounded-sm border-slate-400 outline-primary block w-full pl-2 py-1"
+                {...register("password", {
+                  required: "Password es requerido",
+                  minLength: {
+                    value: 6,
+                    message: "Password minimo debe ser 6 digitos",
+                  },
+                })}
+              />
+              <button
+                className="btn-secondary text-xs p-2 hover:bg-primary hover:text-white"
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "Hide " : "Show"}
+              </button>
+            </div>
           </div>
 
           {errors.root && (
             <p className="text-xs text-red">{errors.root.message}</p>
           )}
-          <button className="btn-primary" disabled={isSubmitting}>
-            {isSubmitting ? "Registrando..." : "Registrar"}
-          </button>
+          <div className="flex justify-between items-center">
+            <button
+              className="btn-primary"
+              disabled={isSubmitting}
+              type="submit"
+            >
+              {isSubmitting ? "Registrando..." : "Registrar"}
+            </button>
+            <Link className="btn-red" to="/">
+              Cancelar
+            </Link>
+          </div>
         </form>
       </section>
     </>
