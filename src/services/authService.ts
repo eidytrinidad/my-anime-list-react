@@ -18,3 +18,16 @@ export const registerUser = async (data: IUser) => {
     Loading.remove();
   }
 };
+export const Login = async (data: IUser) => {
+  Loading.circle();
+
+  try {
+    const response = await axios.post(`${baseUrl}/login`, { ...data });
+    return response;
+  } catch (error: any) {
+    const { msg } = error.response.data;
+    Notify.failure(msg, { timeout: 5000 });
+  } finally {
+    Loading.remove();
+  }
+};
