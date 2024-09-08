@@ -1,13 +1,19 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AnimeContainer, ErrorPage, HomeLayout } from "./pages";
 import "./index.css";
+import { Register } from "./pages/auth";
 
 const router = createBrowserRouter([
+
   {
     path: "/",
     element: <HomeLayout />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path:"register",
+        element:<Register/>
+      },
       {
         index: true,
         element: <AnimeContainer />,

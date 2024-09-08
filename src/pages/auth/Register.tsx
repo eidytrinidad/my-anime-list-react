@@ -3,8 +3,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { IUser } from "../../interfaces";
 import { registerUser } from "../../services/authService";
+import { useAuthStore } from "../../store/authStore";
 export const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { setToken, setProfile } = useAuthStore((state) => state);
   const navigate = useNavigate();
   const {
     register,
@@ -20,6 +22,8 @@ export const Register = () => {
   const onSubmit: SubmitHandler<IUser> = async (data) => {
     const response: any = await registerUser(data);
     if (response) {
+      setToken(response.data.accessToken);
+      setProfile(response.data.user);
       navigate("/");
     }
   };
