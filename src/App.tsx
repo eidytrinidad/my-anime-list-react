@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AnimeContainer, ErrorPage, HomeLayout } from "./pages";
+import { AddAnime, AnimeContainer, ErrorPage, HomeLayout } from "./pages";
 import "./index.css";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 const router = createBrowserRouter([
   {
@@ -14,10 +15,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/agregar",
-        lazy: async () => {
-          let { AddAnime } = await import("./pages/animes/add-anime/AddAnime");
-          return { Component: AddAnime };
-        },
+        element: (
+          <ProtectedRoutes isAllowed={false}>
+            <AddAnime />
+          </ProtectedRoutes>
+        ),
       },
       {
         path: "/editar/:animeId",
@@ -43,6 +45,8 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+
 function App() {
   return (
     <>

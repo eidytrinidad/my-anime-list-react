@@ -37,7 +37,7 @@ export const Navbar = () => {
         ) : (
           <li>
             <NavLink
-              to="/login"
+              to="/iniciar-sesion"
               className={({ isActive }: NavlinkType) =>
                 `font-semibold text-white text-sm ml-4 ${
                   isActive ? " bg-slate-100/[0.2] p-2 rounded" : ""
@@ -51,7 +51,7 @@ export const Navbar = () => {
 
         <li>
           <NavLink
-            to="/register"
+            to="/registrar"
             className={({ isActive }: NavlinkType) =>
               `font-semibold text-white text-sm ml-4 ${
                 isActive ? " bg-slate-100/[0.2] p-2 rounded" : ""
