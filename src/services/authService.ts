@@ -18,7 +18,7 @@ export const registerUser = async (data: IUser) => {
     Loading.remove();
   }
 };
-export const Login = async (data: IUser) => {
+export const loginUser = async (data: IUser) => {
   Loading.circle();
 
   try {

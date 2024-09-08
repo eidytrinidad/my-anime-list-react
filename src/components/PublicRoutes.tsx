@@ -1,16 +1,16 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 
-type ProtectedRoutesProps = {
+type PublicRoutesProps = {
   children?: React.ReactNode;
 };
 
-const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
+const PublicRoutes = ({ children }: PublicRoutesProps) => {
   const { isAuth } = useAuthStore((state) => state);
-  if (!isAuth) {
-    return <Navigate to={"/iniciar-sesion"} />;
+  if (isAuth) {
+    return <Navigate to={"/"} />;
   }
   return children ? <>{children}</> : <Outlet />;
 };
 
-export default ProtectedRoutes;
+export default PublicRoutes;

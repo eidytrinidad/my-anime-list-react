@@ -8,6 +8,7 @@ import { AddAnime, AnimeContainer, ErrorPage, HomeLayout } from "./pages";
 import "./index.css";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import { Login } from "./pages/auth";
+import PublicRoutes from "./components/PublicRoutes";
 
 // const router = createBrowserRouter([
 //   {
@@ -55,8 +56,18 @@ import { Login } from "./pages/auth";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<HomeLayout />} errorElement={<ErrorPage />}>
-      <Route path="/iniciar-sesion" element={<Login />} />
-      <Route element={<ProtectedRoutes isAllowed={false} />}>
+      <Route index={true} element={<AnimeContainer />} />
+      <Route element={<PublicRoutes />}>
+        <Route path="/iniciar-sesion" element={<Login />} />
+      </Route>
+      <Route
+        path="/registrar"
+        lazy={async () => {
+          let { Register } = await import("./pages/auth/Register");
+          return { Component: Register };
+        }}
+      />
+      <Route element={<ProtectedRoutes />}>
         <Route
           path="/agregar"
           lazy={async () => {
