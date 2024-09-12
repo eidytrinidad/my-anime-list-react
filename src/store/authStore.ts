@@ -5,11 +5,11 @@ import { IUserProfile } from "../interfaces";
 type State = {
   token: string;
   isAuth: boolean;
-  profile: IUserProfile;
+  profile: IUserProfile | null;
 };
 type Actions = {
   setToken: (token: string) => void;
-  logout?: () => void;
+  logout: () => void;
   setProfile: (profile: IUserProfile) => void;
 };
 
@@ -28,6 +28,12 @@ export const useAuthStore = create(
         set(() => ({
           token,
           isAuth: true,
+        })),
+      logout: () =>
+        set(() => ({
+          token: "",
+          isAuth: false,
+          profile: null,
         })),
     }),
     {

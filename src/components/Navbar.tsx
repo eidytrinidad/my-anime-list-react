@@ -1,9 +1,26 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
+import { showConfirm } from "../helpers";
+import { Loading } from "notiflix";
+import { logOutUser } from "../services/authService";
 
 type NavlinkType = { isActive: boolean };
+
 export const Navbar = () => {
-  const { isAuth } = useAuthStore();
+  const { isAuth, logout } = useAuthStore((state) => state);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    showConfirm("Cerrar sesion").then(async () => {
+      Loading.standard("Loading...");
+      const response: any = await logOutUser();
+
+      if (response.status === 200) {
+        logout();
+        navigate("/");
+        Loading.remove();
+      }
+    });
+  };
   return (
     <nav className="p-2">
       <ul className="flex ">
@@ -32,6 +49,14 @@ export const Navbar = () => {
               >
                 Agregar
               </NavLink>
+            </li>
+            <li>
+              <button
+                className="text-white text-sm p-1 rounded-md bg-red-600 ml-4"
+                onClick={handleLogout}
+              >
+                Cerrar sesion
+              </button>
             </li>
           </>
         ) : (

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../libs/axios";
 import { AnimeState } from "../constants/anime";
 import { IFunctionGetData, IApiCollection, IAnime } from "../interfaces";
 import { IApiData } from "../interfaces/data.interface";
@@ -51,42 +51,25 @@ export const postAnimesDB = async (anime: IAnime) => {
 };
 export const editAnimesDB = async (anime: IAnime) => {
   Loading.circle();
-  const requestOptions = {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
 
-    body: JSON.stringify({ ...anime }),
-  };
-  const res = await fetch(`${baseUrl}/${anime.id}`, requestOptions);
-  if (!res.ok) {
+  try {
+    const response = await axios.patch(`${baseUrl}/${anime.id}`, anime);
+    return response;
+  } catch (error: any) {
+    const { msg } = error.response.data;
+    Notify.failure(msg, { timeout: 5000 });
+  } finally {
     Loading.remove();
-    return res.text().then((text: any) => {
-      Notify.failure(JSON.parse(text).msg, { timeout: 5000 });
-
-      throw new Error(text);
-    });
-  } else {
-    Loading.remove();
-    return res;
   }
 };
 export const deleteAnimeDB = async (anime: IAnime) => {
   const data = {
     ...anime,
-    state: AnimeState.INACTIVE,
+    state: false,
   };
+
   try {
-    const requestOptions = {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    };
-    const response = await axios.patch(
-      `${baseUrl}/${anime.id}`,
-      requestOptions
-    );
+    const response = await axios.patch(`${baseUrl}/${anime.id}`, data);
     return response;
   } catch (error: any) {
     const { msg } = error.response.data;

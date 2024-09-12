@@ -12,7 +12,6 @@ import { setDynamicId } from "../../../helpers";
 import AnimeForm from "../../../components/AnimeForm";
 import { IAnime } from "../../../interfaces";
 
-
 export const AddAnime = () => {
   let { animeId } = useParams();
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ export const AddAnime = () => {
       const formData = { ...data, id: animeId };
       response = await editAnimesDB(formData);
 
-      if (response?.ok) {
+      if (response?.status === 200) {
         navigate("/");
       }
 

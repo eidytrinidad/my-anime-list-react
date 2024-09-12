@@ -17,7 +17,7 @@ const initialState = {
 };
 const searchParamsInitialState = {
   numeroPagina: 1,
-  limite: 2,
+  limite: 10,
 };
 export const AnimeContainer = () => {
   const {
@@ -37,7 +37,8 @@ export const AnimeContainer = () => {
     showConfirm("Borrar Anime").then(async () => {
       Loading.standard("Loading...");
       const response: any = await deleteAnimeDB(anime);
-      if (response?.ok) {
+
+      if (response.status===200) {
         setIsLoading(true);
         Loading.remove();
       }
